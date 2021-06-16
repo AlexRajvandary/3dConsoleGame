@@ -1,3 +1,3 @@
 3D Console Game
 ----------
-![img](images/3DConsoleGame.gif)
+![img](Images/3DConsoleGame.gif)
