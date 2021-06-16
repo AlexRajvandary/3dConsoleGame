@@ -1,4 +1,4 @@
-3D Console Game
+3D Maze Game
 ----------
 I was inspired by https://www.youtube.com/watch?v=tR30963rDig and now I want to add some features. I am going to make 3d maze game.
 ![img](Images/3DConsoleGameUpdate.gif)
