@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PlayerLib;
 
 namespace _3dFps
 {
@@ -17,9 +18,13 @@ namespace _3dFps
         private const double Depth = 16;
         private const double Fov = Math.PI / 3.5;
 
-        private static double _playerX = 3.0;
-        private static double _playerY = 3.0;
-        private static double _playerA;
+
+        private static (double, double) StartPosition = (3.0, 3.0);
+        private static Player player = new Player(new Position(StartPosition));
+
+      
+      
+       
 
         private static readonly StringBuilder Map = new StringBuilder();
 
@@ -44,48 +49,14 @@ namespace _3dFps
 
                 if (Console.KeyAvailable)
                 {
+
                     InitMap();
 
-                    ConsoleKey consoleKey = Console.ReadKey(true).Key;
+                    ConsoleKey InputedKey = Console.ReadKey(true).Key;
 
-                    switch (consoleKey)
-                    {
-                        case ConsoleKey.A:
-                            _playerA += elapsedTime * 2;
-                            break;
-                        case ConsoleKey.D:
-                            _playerA -= elapsedTime * 2;
-                            break;
-                        case ConsoleKey.W:
-                            {
-                                _playerX += Math.Sin(_playerA) * 5 * elapsedTime;
-                                _playerY += Math.Cos(_playerA) * 5 * elapsedTime;
+                    ControlPlayerMovement(elapsedTime, InputedKey);
 
-                                if (Map[(int)_playerY * MapWidth + (int)_playerX] == '#')
-                                {
-                                    _playerX -= Math.Sin(_playerA) * 5 * elapsedTime;
-                                    _playerY -= Math.Cos(_playerA) * 5 * elapsedTime;
-                                }
-
-                                break;
-                            }
-
-                        case ConsoleKey.S:
-                            {
-                                _playerX -= Math.Sin(_playerA) * 5 * elapsedTime;
-                                _playerY -= Math.Cos(_playerA) * 5 * elapsedTime;
-
-                                if (Map[(int)_playerY * MapWidth + (int)_playerX] == '#')
-                                {
-                                    _playerX += Math.Sin(_playerA) * 5 * elapsedTime;
-                                    _playerY += Math.Cos(_playerA) * 5 * elapsedTime;
-                                }
-
-                                break;
-                            }
-                    }
-
-                    if (consoleKey == ConsoleKey.Escape)
+                    if (IsUserWantsToExit(InputedKey))
                     {
                         break;
                     }
@@ -107,23 +78,78 @@ namespace _3dFps
                 }
 
                 //Stats
-                char[] stats = $"X: {_playerX}, Y: {_playerY}, A: {_playerA}, FPS: {(int)(1 / elapsedTime)}"
-                    .ToCharArray();
-                stats.CopyTo(screen, 0);
+                GameStatistics(screen, elapsedTime);
 
                 //Map
-                for (int x = 0; x < MapWidth; x++)
-                {
-                    for (int y = 0; y < MapHeight; y++)
-                    {
-                        screen[(y + 1) * ScreenWidth + x] = Map[y * MapWidth + x];
-                    }
-                }
-
-                screen[(int)(_playerY + 1) * ScreenWidth + (int)_playerX] = 'P';
+                ScreenUpdate(screen);
 
                 Console.SetCursorPosition(0, 0);
                 Console.Write(screen, 0, ScreenWidth * ScreenHeight);
+            }
+        }
+
+        private static void ScreenUpdate(char[] screen)
+        {
+            for (int x = 0; x < MapWidth; x++)
+            {
+                for (int y = 0; y < MapHeight; y++)
+                {
+                    screen[(y + 1) * ScreenWidth + x] = Map[y * MapWidth + x];
+                }
+            }
+
+            screen[(int)(player.Position.Y + 1) * ScreenWidth + (int)player.Position.X] = 'P';
+        }
+
+        private static void GameStatistics(char[] screen, double elapsedTime)
+        {
+            char[] stats = $"{player.Position}, FPS: {(int)(1 / elapsedTime)}"
+                .ToCharArray();
+            stats.CopyTo(screen, 0);
+        }
+
+        private static bool IsUserWantsToExit(ConsoleKey consoleKey)
+        {
+            return consoleKey == ConsoleKey.Escape;
+        }
+
+        private static void ControlPlayerMovement(double elapsedTime, ConsoleKey consoleKey)
+        {
+            switch (consoleKey)
+            {
+                case ConsoleKey.A:
+                    player.Position.Angle += elapsedTime * 2;
+                    break;
+                case ConsoleKey.D:
+                    player.Position.Angle -= elapsedTime * 2;
+                    break;
+                case ConsoleKey.W:
+                    {
+                        player.Position.X += Math.Sin(player.Position.Angle) * 5 * elapsedTime;
+                        player.Position.Y += Math.Cos(player.Position.Angle) * 5 * elapsedTime;
+
+                        if (Map[(int)player.Position.Y * MapWidth + (int)player.Position.X] == '#')
+                        {
+                            player.Position.X -= Math.Sin(player.Position.Angle) * 5 * elapsedTime;
+                            player.Position.Y -= Math.Cos(player.Position.Angle) * 5 * elapsedTime;
+                        }
+
+                        break;
+                    }
+
+                case ConsoleKey.S:
+                    {
+                        player.Position.X -= Math.Sin(player.Position.Angle) * 5 * elapsedTime;
+                        player.Position.Y -= Math.Cos(player.Position.Angle) * 5 * elapsedTime;
+
+                        if (Map[(int)player.Position.Y * MapWidth + (int)player.Position.X] == '#')
+                        {
+                            player.Position.X += Math.Sin(player.Position.Angle) * 5 * elapsedTime;
+                            player.Position.Y += Math.Cos(player.Position.Angle) * 5 * elapsedTime;
+                        }
+
+                        break;
+                    }
             }
         }
 
@@ -131,7 +157,7 @@ namespace _3dFps
         {
             var result = new Dictionary<int, char>();
 
-            double rayAngle = (_playerA + Fov / 2) - x * Fov / ScreenWidth;
+            double rayAngle = (player.Position.Angle + Fov / 2) - x * Fov / ScreenWidth;
 
             double distanceToWall = 0;
             bool hitWall = false;
@@ -145,10 +171,10 @@ namespace _3dFps
             {
                 distanceToWall += 0.1;
 
-                int testX = (int)(_playerX + rayX * distanceToWall);
-                int testY = (int)(_playerY + rayY * distanceToWall);
+                int testX = (int)(player.Position.X + rayX * distanceToWall);
+                int testY = (int)(player.Position.Y + rayY * distanceToWall);
 
-                if (testX < 0 || testX >= Depth + _playerX || testY < 0 || testY >= Depth + _playerY)
+                if (testX < 0 || testX >= Depth + player.Position.X || testY < 0 || testY >= Depth + player.Position.Y)
                 {
                     hitWall = true;
                     distanceToWall = Depth;
@@ -169,8 +195,8 @@ namespace _3dFps
                         {
                             for (int ty = 0; ty < 2; ty++)
                             {
-                                double vx = testX + tx - _playerX;
-                                double vy = testY + ty - _playerY;
+                                double vx = testX + tx - player.Position.X;
+                                double vy = testY + ty - player.Position.Y;
 
                                 double vectorModule = Math.Sqrt(vx * vx + vy * vy);
                                 double cosAngle = (rayX * vx / vectorModule) + (rayY * vy / vectorModule);

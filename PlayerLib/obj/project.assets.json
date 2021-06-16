@@ -1,30 +1,11 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
-      "PlayerLib/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "compile": {
-          "bin/placeholder/PlayerLib.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/PlayerLib.dll": {}
-        }
-      }
-    }
+    ".NETCoreApp,Version=v3.1": {}
   },
-  "libraries": {
-    "PlayerLib/1.0.0": {
-      "type": "project",
-      "path": "../PlayerLib/PlayerLib.csproj",
-      "msbuildProject": "../PlayerLib/PlayerLib.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": [
-      "PlayerLib >= 1.0.0"
-    ]
+    ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
     "C:\\Users\\Alex Raj\\.nuget\\packages\\": {},
@@ -33,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Alex Raj\\source\\3dFps\\3dFps\\3dFps.csproj",
-      "projectName": "3dFps",
-      "projectPath": "C:\\Users\\Alex Raj\\source\\3dFps\\3dFps\\3dFps.csproj",
+      "projectUniqueName": "C:\\Users\\Alex Raj\\source\\3dFps\\PlayerLib\\PlayerLib.csproj",
+      "projectName": "PlayerLib",
+      "projectPath": "C:\\Users\\Alex Raj\\source\\3dFps\\PlayerLib\\PlayerLib.csproj",
       "packagesPath": "C:\\Users\\Alex Raj\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Alex Raj\\source\\3dFps\\3dFps\\obj\\",
+      "outputPath": "C:\\Users\\Alex Raj\\source\\3dFps\\PlayerLib\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -56,11 +37,7 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {
-            "C:\\Users\\Alex Raj\\source\\3dFps\\PlayerLib\\PlayerLib.csproj": {
-              "projectPath": "C:\\Users\\Alex Raj\\source\\3dFps\\PlayerLib\\PlayerLib.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

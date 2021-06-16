@@ -6,4 +6,8 @@
     <RootNamespace>_3dFps</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PlayerLib\PlayerLib.csproj" />
+  </ItemGroup>
+
 </Project>

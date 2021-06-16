@@ -11,3 +11,6 @@ C:\Users\Alex Raj\source\3dFps\3dFps\obj\Debug\netcoreapp3.1\3dFps.csproj.CoreCo
 C:\Users\Alex Raj\source\3dFps\3dFps\obj\Debug\netcoreapp3.1\3dFps.dll
 C:\Users\Alex Raj\source\3dFps\3dFps\obj\Debug\netcoreapp3.1\3dFps.pdb
 C:\Users\Alex Raj\source\3dFps\3dFps\obj\Debug\netcoreapp3.1\3dFps.genruntimeconfig.cache
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Debug\netcoreapp3.1\PlayerLib.dll
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Debug\netcoreapp3.1\PlayerLib.pdb
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Debug\netcoreapp3.1\3dFps.csproj.CopyComplete
