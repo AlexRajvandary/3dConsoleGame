@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace PlayerLib
+﻿namespace PlayerLib
 {
     public class Player
     {
         public Position Position { get; set; }
 
-        public Player (Position position)
+        public Player(Position position)
         {
             Position = position;
         }

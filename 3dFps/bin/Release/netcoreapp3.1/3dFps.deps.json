@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "3dFps/1.0.0": {
+        "dependencies": {
+          "PlayerLib": "1.0.0"
+        },
+        "runtime": {
+          "3dFps.dll": {}
+        }
+      },
+      "PlayerLib/1.0.0": {
+        "runtime": {
+          "PlayerLib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "3dFps/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PlayerLib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

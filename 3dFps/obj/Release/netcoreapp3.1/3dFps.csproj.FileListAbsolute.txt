@@ -1,0 +1,16 @@
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\3dFps.exe
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\3dFps.deps.json
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\3dFps.runtimeconfig.json
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\3dFps.runtimeconfig.dev.json
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\3dFps.dll
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\3dFps.pdb
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\PlayerLib.dll
+C:\Users\Alex Raj\source\3dFps\3dFps\bin\Release\netcoreapp3.1\PlayerLib.pdb
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.csprojAssemblyReference.cache
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.AssemblyInfoInputs.cache
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.AssemblyInfo.cs
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.csproj.CoreCompileInputs.cache
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.csproj.CopyComplete
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.dll
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.pdb
+C:\Users\Alex Raj\source\3dFps\3dFps\obj\Release\netcoreapp3.1\3dFps.genruntimeconfig.cache

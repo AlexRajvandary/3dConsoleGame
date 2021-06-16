@@ -1,35 +1,77 @@
-﻿using System;
+﻿using PlayerLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlayerLib;
 
 namespace _3dFps
 {
 
     class Program
     {
-        private const int ScreenWidth = 300;
-        private const int ScreenHeight = 80;
-        private const int MapHeight = 64;
-        private const int MapWidth = 64;
+        private static int ScreenWidth = Console.LargestWindowWidth;
+        private static int ScreenHeight = Console.LargestWindowHeight;
 
-        private const double Depth = 16;
+        private const int MapHeight = 32;
+        private const int MapWidth = 32;
+
+        private const double Depth = 20;
         private const double Fov = Math.PI / 3.5;
 
-
         private static (double, double) StartPosition = (3.0, 3.0);
-        private static Player player = new Player(new Position(StartPosition));
-
-      
-      
-       
+        private static Player player;
 
         private static readonly StringBuilder Map = new StringBuilder();
 
         static async Task Main()
         {
+            do
+            {
+                //ConsoleHelper.SetCurrentFont("Consolas", 10);
+
+                ChangeConsoleColor(ConsoleColor.Black, ConsoleColor.White);
+
+                await StartGame();
+
+                RestartAndExitInfo();
+
+            } while (Console.ReadKey().Key != ConsoleKey.Escape);
+        }
+
+        private static void RestartAndExitInfo()
+        {
+            Console.Clear();
+
+            //ConsoleHelper.SetCurrentFont("Consolas", 40);
+
+            ChangeConsoleColor(ConsoleColor.Red, ConsoleColor.White);
+
+            Console.SetCursorPosition(25, 5);
+
+            Console.Write(" Exit:              Restart:      ");
+
+            Console.SetCursorPosition(25, 7);
+
+            ChangeConsoleColor(ConsoleColor.White, ConsoleColor.Black);
+
+            Console.Write(" Escape ");
+
+            Console.SetCursorPosition(49, 7);
+            Console.Write(" Any other key ");
+        }
+
+        private static void ChangeConsoleColor(ConsoleColor Background, ConsoleColor ForeGroung)
+        {
+            Console.BackgroundColor = Background;
+
+            Console.ForegroundColor = ForeGroung;
+        }
+
+        private static async Task StartGame()
+        {
+            player = new Player(new Position(StartPosition));
+
             Console.SetWindowSize(ScreenWidth, ScreenHeight);
             Console.SetBufferSize(ScreenWidth, ScreenHeight);
             Console.CursorVisible = false;
@@ -46,15 +88,17 @@ namespace _3dFps
                 var dateTimeTo = DateTime.Now;
                 double elapsedTime = (dateTimeTo - dateTimeFrom).TotalSeconds;
                 dateTimeFrom = dateTimeTo;
-
+                ConsoleKey InputedKey = new ConsoleKey();
                 if (Console.KeyAvailable)
                 {
 
                     InitMap();
 
-                    ConsoleKey InputedKey = Console.ReadKey(true).Key;
+                    InputedKey = Console.ReadKey(true).Key;
 
                     ControlPlayerMovement(elapsedTime, InputedKey);
+
+                  
 
                     if (IsUserWantsToExit(InputedKey))
                     {
@@ -78,7 +122,7 @@ namespace _3dFps
                 }
 
                 //Stats
-                GameStatistics(screen, elapsedTime);
+                GameStatistics(screen, elapsedTime, InputedKey);
 
                 //Map
                 ScreenUpdate(screen);
@@ -101,9 +145,9 @@ namespace _3dFps
             screen[(int)(player.Position.Y + 1) * ScreenWidth + (int)player.Position.X] = 'P';
         }
 
-        private static void GameStatistics(char[] screen, double elapsedTime)
+        private static void GameStatistics(char[] screen, double elapsedTime, ConsoleKey Pressedkey)
         {
-            char[] stats = $"{player.Position}, FPS: {(int)(1 / elapsedTime)}"
+            char[] stats = $"{player.Position}, FPS: {(int)(1 / elapsedTime)}, Pressed Key: {Pressedkey}"
                 .ToCharArray();
             stats.CopyTo(screen, 0);
         }
@@ -125,13 +169,13 @@ namespace _3dFps
                     break;
                 case ConsoleKey.W:
                     {
-                        player.Position.X += Math.Sin(player.Position.Angle) * 5 * elapsedTime;
-                        player.Position.Y += Math.Cos(player.Position.Angle) * 5 * elapsedTime;
+                        player.Position.X += Math.Sin(player.Position.Angle) * 3 * elapsedTime;
+                        player.Position.Y += Math.Cos(player.Position.Angle) * 3 * elapsedTime;
 
                         if (Map[(int)player.Position.Y * MapWidth + (int)player.Position.X] == '#')
                         {
-                            player.Position.X -= Math.Sin(player.Position.Angle) * 5 * elapsedTime;
-                            player.Position.Y -= Math.Cos(player.Position.Angle) * 5 * elapsedTime;
+                            player.Position.X -= Math.Sin(player.Position.Angle) * 3 * elapsedTime;
+                            player.Position.Y -= Math.Cos(player.Position.Angle) * 3 * elapsedTime;
                         }
 
                         break;
@@ -228,14 +272,16 @@ namespace _3dFps
 
             if (isBound)
                 wallShade = '|';
-            else if (distanceToWall <= Depth / 4.0)
+            else if (distanceToWall <= Depth / 5)
                 wallShade = '\u2588';
-            else if (distanceToWall < Depth / 3.0)
-                wallShade = '\u2593';
-            else if (distanceToWall < Depth / 2.0)
-                wallShade = '\u2592';
+            else if (distanceToWall < Depth / 4)
+                wallShade = '#';
+            else if (distanceToWall < Depth / 3)
+                wallShade = '=';
+            else if (distanceToWall < Depth / 2)
+                wallShade = '+';
             else if (distanceToWall < Depth)
-                wallShade = '\u2591';
+                wallShade = '_';
             else
                 wallShade = ' ';
 
@@ -253,9 +299,9 @@ namespace _3dFps
                     if (b < 0.25)
                         floorShade = '#';
                     else if (b < 0.5)
-                        floorShade = 'x';
+                        floorShade = '.';
                     else if (b < 0.75)
-                        floorShade = '-';
+                        floorShade = '.';
                     else if (b < 0.9)
                         floorShade = '.';
                     else
@@ -271,70 +317,38 @@ namespace _3dFps
         public static void InitMap()
         {
             Map.Clear();
-            Map.Append("################################################################");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#............#.................................................#");
-            Map.Append("#............#.................................................#");
-            Map.Append("#............#.................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#............#.................................................#");
-            Map.Append("#............#.................................................#");
-            Map.Append("#............#.................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("#..............................................................#");
-            Map.Append("################################################################");
+            Map.Append("################################");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#            #                 #");
+            Map.Append("#            #                 #");
+            Map.Append("#            #                 #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#            #                 #");
+            Map.Append("#            #                 #");
+            Map.Append("#            #                 #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("#                              #");
+            Map.Append("################################");
         }
     }
 }

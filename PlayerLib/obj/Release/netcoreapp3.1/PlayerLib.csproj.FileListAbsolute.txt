@@ -1,0 +1,9 @@
+C:\Users\Alex Raj\source\3dFps\PlayerLib\bin\Release\netcoreapp3.1\PlayerLib.deps.json
+C:\Users\Alex Raj\source\3dFps\PlayerLib\bin\Release\netcoreapp3.1\PlayerLib.dll
+C:\Users\Alex Raj\source\3dFps\PlayerLib\bin\Release\netcoreapp3.1\PlayerLib.pdb
+C:\Users\Alex Raj\source\3dFps\PlayerLib\obj\Release\netcoreapp3.1\PlayerLib.csprojAssemblyReference.cache
+C:\Users\Alex Raj\source\3dFps\PlayerLib\obj\Release\netcoreapp3.1\PlayerLib.AssemblyInfoInputs.cache
+C:\Users\Alex Raj\source\3dFps\PlayerLib\obj\Release\netcoreapp3.1\PlayerLib.AssemblyInfo.cs
+C:\Users\Alex Raj\source\3dFps\PlayerLib\obj\Release\netcoreapp3.1\PlayerLib.csproj.CoreCompileInputs.cache
+C:\Users\Alex Raj\source\3dFps\PlayerLib\obj\Release\netcoreapp3.1\PlayerLib.dll
+C:\Users\Alex Raj\source\3dFps\PlayerLib\obj\Release\netcoreapp3.1\PlayerLib.pdb
